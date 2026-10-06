@@ -47,6 +47,12 @@
     sort: { key: null, dir: "desc" },
     query: "",
     division: "all",
+    activeTab: "overview",
+    attQuery: "",
+    attStatus: "all",
+    teamQuery: "",
+    teamDivision: "all",
+    leadsQuery: "",
     hiddenSeries: new Set(),
     processed: {}, // { [branch]: Set(leaveId) }
     lastFocus: null,
@@ -111,6 +117,59 @@
     feedEmpty: $("#feed-empty"),
     lastUpdated: $("#last-updated"),
     toastRegion: $("#toast-region"),
+
+    // Sub-view Containers
+    viewOverview: $("#view-overview"),
+    viewAttendance: $("#view-attendance"),
+    viewCommission: $("#view-commission"),
+    viewTeam: $("#view-team"),
+    viewLeads: $("#view-leads"),
+    viewReports: $("#view-reports"),
+
+    // Sub-view 1: Attendance
+    attSummaryGrid: $("#att-summary-grid"),
+    attSearch: $("#att-search"),
+    attStatusFilter: $("#att-status-filter"),
+    btnExportAtt: $("#btn-export-att"),
+    attTableHead: $("#att-table-head"),
+    attTableBody: $("#att-table-body"),
+    attCount: $("#att-count"),
+    attEmpty: $("#att-empty"),
+
+    // Sub-view 2: Commission
+    commSummaryGrid: $("#comm-summary-grid"),
+    commRuleBox: $("#comm-rule-box"),
+    btnSubmitPayroll: $("#btn-submit-payroll"),
+    commTableHead: $("#comm-table-head"),
+    commTableBody: $("#comm-table-body"),
+    commCount: $("#comm-count"),
+
+    // Sub-view 3: Team Directory
+    teamSearch: $("#team-search"),
+    teamDivisionFilter: $("#team-division-filter"),
+    teamGrid: $("#team-grid"),
+    teamEmpty: $("#team-empty"),
+
+    // Sub-view 4: Leads Pipeline
+    leadsFunnelGrid: $("#leads-funnel-grid"),
+    leadsSearch: $("#leads-search"),
+    btnAddLead: $("#btn-add-lead"),
+    leadsTableHead: $("#leads-table-head"),
+    leadsTableBody: $("#leads-table-body"),
+    leadsCount: $("#leads-count"),
+    leadsEmpty: $("#leads-empty"),
+
+    // Sub-view 5: Branch Reports
+    btnDownloadPdf: $("#btn-download-pdf"),
+    btnDownloadExcel: $("#btn-download-excel"),
+    repKpiGrid: $("#rep-kpi-grid"),
+    repSummaryCard: $("#rep-summary-card"),
+    repStatSpk: $("#rep-stat-spk"),
+    repStatService: $("#rep-stat-service"),
+    repStatCsat: $("#rep-stat-csat"),
+    repStatParts: $("#rep-stat-parts"),
+    repStatSop: $("#rep-stat-sop"),
+    repHighlightsList: $("#rep-highlights-list"),
   };
 
   /* ---------- Helpers ---------- */
@@ -242,6 +301,7 @@
     el.langButtons.forEach((btn) => btn.setAttribute("aria-pressed", String(btn.dataset.lang === state.lang)));
 
     updateWelcome();
+    switchTab(state.activeTab);
     if (state.data) renderAll(false);
   }
 
@@ -897,7 +957,367 @@
     }
   }
 
-  // 6. Master Render All Cards
+  function formatRupiah(num) {
+    return "Rp " + Number(num).toLocaleString("id-ID");
+  }
+
+  // 6. Sub-view Renderers
+  function renderAttendanceView() {
+    if (!state.data || !state.data.attendanceDetail) return;
+    const staff = state.data.attendanceDetail;
+
+    const presentCount = staff.filter((s) => s.status === "present").length;
+    const lateCount = staff.filter((s) => s.status === "late").length;
+    const leaveCount = staff.filter((s) => s.status === "leave" || s.status === "sick").length;
+    const pct = Math.round((presentCount / staff.length) * 100);
+
+    el.attSummaryGrid.innerHTML = `
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("totalStaff")}</span>
+          <span class="kpi-icon">${KPI_ICONS.attendance}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${staff.length}</span></div>
+        <span class="kpi-hint">${t("kpiHint_attendance")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("status_present")}</span>
+          <span class="kpi-icon" style="color:var(--success);">${KPI_ICONS.attendance}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${presentCount}</span><span class="kpi-trend is-good">${pct}%</span></div>
+        <span class="kpi-hint">${t("kpi_attendance")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("status_late")}</span>
+          <span class="kpi-icon" style="color:var(--warning);">${KPI_ICONS.attendance}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${lateCount}</span></div>
+        <span class="kpi-hint">${t("status_late")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("kpi_onLeave")}</span>
+          <span class="kpi-icon" style="color:var(--danger);">${KPI_ICONS.onLeave}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${leaveCount}</span></div>
+        <span class="kpi-hint">${t("kpiHint_onLeave")}</span>
+      </article>
+    `;
+
+    const q = (state.attQuery || "").toLowerCase();
+    const st = state.attStatus || "all";
+    const filtered = staff.filter((s) => {
+      const matchQ = !q || s.name.toLowerCase().includes(q) || s.nip.includes(q) || s.roleTitle.toLowerCase().includes(q);
+      const matchSt = st === "all" || s.status === st;
+      return matchQ && matchSt;
+    });
+
+    el.attTableHead.innerHTML = `
+      <tr>
+        <th>${t("att_col_nip")}</th>
+        <th>${t("att_col_name")}</th>
+        <th>${t("att_col_role")}</th>
+        <th>${t("att_col_shift")}</th>
+        <th>${t("att_col_in")}</th>
+        <th>${t("att_col_out")}</th>
+        <th>${t("att_col_status")}</th>
+        <th>${t("att_col_note")}</th>
+      </tr>
+    `;
+
+    el.attTableBody.innerHTML = filtered.map((row) => `
+      <tr>
+        <td><code>${escapeHtml(row.nip)}</code></td>
+        <td><strong>${escapeHtml(row.name)}</strong></td>
+        <td><span class="tag-role">${escapeHtml(row.roleTitle)}</span></td>
+        <td>${t(row.shift)}</td>
+        <td><strong>${row.checkIn}</strong></td>
+        <td>${row.checkOut}</td>
+        <td><span class="badge status-${row.status}">${t("status_" + row.status)}</span></td>
+        <td style="color:var(--text-muted); font-size:0.84rem;">${escapeHtml(row.note)}</td>
+      </tr>
+    `).join("");
+
+    el.attCount.textContent = t("tableCount", { n: filtered.length, t: staff.length });
+    el.attEmpty.hidden = filtered.length > 0;
+  }
+
+  function renderCommissionView() {
+    if (!state.data || !state.data.commissionList) return;
+    const comms = state.data.commissionList;
+
+    const totalPool = comms.reduce((sum, c) => sum + c.total, 0);
+    const totalSpk = comms.reduce((sum, c) => sum + c.spk, 0);
+    const avgPct = Math.round(comms.reduce((sum, c) => sum + c.pct, 0) / comms.length);
+    const readyCount = comms.filter((c) => c.status === "payroll_ready").length;
+
+    el.commSummaryGrid.innerHTML = `
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("comm_card_summary")}</span>
+          <span class="kpi-icon">${KPI_ICONS.commission}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${formatRupiah(totalPool)}</span></div>
+        <span class="kpi-hint">${t("kpiHint_commission")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("kpi_unitsSold")}</span>
+          <span class="kpi-icon">${KPI_ICONS.unitsSold}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${totalSpk} SPK</span></div>
+        <span class="kpi-hint">${t("kpiHint_unitsSold")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("comm_col_pct")}</span>
+          <span class="kpi-icon">${KPI_ICONS.conversion}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${avgPct}%</span></div>
+        <span class="kpi-hint">${t("ofTarget")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("payroll_ready")}</span>
+          <span class="kpi-icon" style="color:var(--success);">${KPI_ICONS.attendance}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${readyCount} / ${comms.length}</span></div>
+        <span class="kpi-hint">${t("comm_col_status")}</span>
+      </article>
+    `;
+
+    el.commTableHead.innerHTML = `
+      <tr>
+        <th>${t("comm_col_name")}</th>
+        <th>${t("comm_col_target")}</th>
+        <th>${t("comm_col_spk")}</th>
+        <th>${t("comm_col_pct")}</th>
+        <th>${t("comm_col_base")}</th>
+        <th>${t("comm_col_bonus")}</th>
+        <th>${t("comm_col_total")}</th>
+        <th>${t("comm_col_status")}</th>
+      </tr>
+    `;
+
+    el.commTableBody.innerHTML = comms.map((row) => `
+      <tr>
+        <td><strong>${escapeHtml(row.name)}</strong></td>
+        <td>${row.target} SPK</td>
+        <td><strong>${row.spk} SPK</strong></td>
+        <td><span class="team-kpi-badge ${row.pct >= 100 ? 'high' : 'mid'}">${row.pct}%</span></td>
+        <td>${formatRupiah(row.base)}</td>
+        <td>${row.bonus > 0 ? formatRupiah(row.bonus) : "—"}</td>
+        <td><strong style="color:var(--accent-primary);">${formatRupiah(row.total)}</strong></td>
+        <td><span class="badge-pill badge-${row.status.replace('_', '-')}">${t(row.status)}</span></td>
+      </tr>
+    `).join("");
+
+    el.commCount.textContent = t("tableCount", { n: comms.length, t: comms.length });
+  }
+
+  function renderTeamView() {
+    if (!state.data || !state.data.teamDirectory) return;
+    const staff = state.data.teamDirectory;
+
+    const q = (state.teamQuery || "").toLowerCase();
+    const div = state.teamDivision || "all";
+    const filtered = staff.filter((s) => {
+      const matchQ = !q || s.name.toLowerCase().includes(q) || s.nip.includes(q) || s.roleTitle.toLowerCase().includes(q) || s.email.toLowerCase().includes(q);
+      const matchDiv = div === "all" || s.division === div;
+      return matchQ && matchDiv;
+    });
+
+    el.teamGrid.innerHTML = filtered.map((m) => `
+      <article class="team-card">
+        <div class="team-card-head">
+          <div class="team-avatar-wrap">
+            <div class="team-avatar">${initials(m.name)}</div>
+            <span class="team-status-dot status-${m.status}" title="${t('status_' + m.status)}"></span>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">${escapeHtml(m.name)}</h3>
+            <p class="team-role">${escapeHtml(m.roleTitle)}</p>
+          </div>
+        </div>
+        <div class="team-details">
+          <div class="team-detail-row">
+            <span>${t("team_col_division")}</span>
+            <strong>${t("div_" + m.division)}</strong>
+          </div>
+          <div class="team-detail-row">
+            <span>${t("team_col_email")}</span>
+            <span>${escapeHtml(m.email)}</span>
+          </div>
+          <div class="team-detail-row">
+            <span>${t("team_col_ext")}</span>
+            <span>Ext. ${escapeHtml(m.ext)}</span>
+          </div>
+          <div class="team-detail-row">
+            <span>${t("team_col_kpi")}</span>
+            <span class="team-kpi-badge ${m.kpi >= 85 ? 'high' : 'mid'}">${m.kpi}/100</span>
+          </div>
+        </div>
+        <div class="team-card-actions">
+          <button type="button" class="btn btn-outline btn-compact team-contact-btn" data-name="${escapeHtml(m.name)}" data-ext="${escapeHtml(m.ext)}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>${t("team_card_contact")}</span>
+          </button>
+        </div>
+      </article>
+    `).join("");
+
+    el.teamEmpty.hidden = filtered.length > 0;
+
+    el.teamGrid.querySelectorAll(".team-contact-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        showToast(t("team_toast_contact", { name: btn.dataset.name, ext: btn.dataset.ext }), "info");
+      });
+    });
+  }
+
+  function renderLeadsView() {
+    if (!state.data || !state.data.leadsList) return;
+    const leads = state.data.leadsList;
+
+    const stages = ["stage_inquiry", "stage_contacted", "stage_testdrive", "stage_negotiation", "stage_delivered"];
+    el.leadsFunnelGrid.innerHTML = stages.map((stg) => {
+      const count = leads.filter((l) => l.stage === stg).length;
+      return `
+        <div class="funnel-card">
+          <span class="funnel-count">${count}</span>
+          <span class="funnel-label">${t(stg)}</span>
+        </div>
+      `;
+    }).join("");
+
+    const q = (state.leadsQuery || "").toLowerCase();
+    const filtered = leads.filter((l) => {
+      return !q || l.customer.toLowerCase().includes(q) || l.model.toLowerCase().includes(q) || l.consultant.toLowerCase().includes(q);
+    });
+
+    el.leadsTableHead.innerHTML = `
+      <tr>
+        <th>${t("leads_col_cust")}</th>
+        <th>${t("leads_col_model")}</th>
+        <th>${t("leads_col_stage")}</th>
+        <th>${t("leads_col_consultant")}</th>
+        <th>${t("leads_col_date")}</th>
+        <th>${t("leads_col_phone")}</th>
+      </tr>
+    `;
+
+    el.leadsTableBody.innerHTML = filtered.map((l) => `
+      <tr>
+        <td><strong>${escapeHtml(l.customer)}</strong></td>
+        <td>${escapeHtml(l.model)}</td>
+        <td><span class="stage-pill ${l.stage}">${t(l.stage)}</span></td>
+        <td>${escapeHtml(l.consultant)}</td>
+        <td>${escapeHtml(l.date)}</td>
+        <td><code>${escapeHtml(l.phone)}</code></td>
+      </tr>
+    `).join("");
+
+    el.leadsCount.textContent = t("tableCount", { n: filtered.length, t: leads.length });
+    el.leadsEmpty.hidden = filtered.length > 0;
+  }
+
+  function renderReportsView() {
+    if (!state.data || !state.data.branchReport) return;
+    const rep = state.data.branchReport;
+
+    el.repKpiGrid.innerHTML = `
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("rep_sales_score")}</span>
+          <span class="kpi-icon">${KPI_ICONS.unitsSold}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${rep.spkActual} / ${rep.spkTarget}</span><span class="kpi-trend is-good">${rep.spkPct}%</span></div>
+        <span class="kpi-hint">${t("ofTarget")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("rep_service_score")}</span>
+          <span class="kpi-icon">${KPI_ICONS.serviceToday}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${rep.serviceActual} unit/hari</span></div>
+        <span class="kpi-hint">${t("kpiHint_serviceToday")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("rep_csat_score")}</span>
+          <span class="kpi-icon" style="color:#FBBF24;">${KPI_ICONS.csat}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${rep.csat} / 5.0</span><span class="kpi-trend is-good">★ Tinggi</span></div>
+        <span class="kpi-hint">${t("kpiHint_csat")}</span>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head">
+          <span class="kpi-title">${t("rep_parts_score")}</span>
+          <span class="kpi-icon">${KPI_ICONS.techUtil}</span>
+        </div>
+        <div class="kpi-val-row"><span class="kpi-val">${rep.partsTurnover}%</span></div>
+        <span class="kpi-hint">${t("rep_parts_score")}</span>
+      </article>
+    `;
+
+    el.repStatSpk.textContent = `${rep.spkActual} SPK (${rep.spkPct}% ${t("ofTarget")})`;
+    el.repStatService.textContent = `${rep.serviceActual} unit/hari`;
+    el.repStatCsat.textContent = `${rep.csat} / 5.0 ★`;
+    el.repStatParts.textContent = `${rep.partsTurnover}%`;
+    el.repStatSop.textContent = `${rep.sopCompliance}%`;
+
+    el.repHighlightsList.innerHTML = rep.highlights.map((h) => `
+      <li class="highlight-item">
+        <svg class="highlight-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>${escapeHtml(h)}</span>
+      </li>
+    `).join("");
+  }
+
+  function switchTab(tabId) {
+    state.activeTab = tabId;
+    el.navButtons.forEach((b) => {
+      const match = b.dataset.nav === tabId;
+      b.classList.toggle("is-active", match);
+      if (match) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
+
+    const panels = {
+      overview: el.viewOverview,
+      attendance: el.viewAttendance,
+      commission: el.viewCommission,
+      team: el.viewTeam,
+      leads: el.viewLeads,
+      reports: el.viewReports,
+    };
+
+    Object.entries(panels).forEach(([k, p]) => {
+      if (p) p.hidden = k !== tabId;
+    });
+
+    const titles = {
+      overview: t("pageTitle"),
+      attendance: t("title_attendance"),
+      commission: t("title_commission"),
+      team: t("title_team"),
+      leads: t("title_leads"),
+      reports: t("title_reports"),
+    };
+    el.pageTitle.textContent = titles[tabId] || t("pageTitle");
+
+    if (state.data) {
+      if (tabId === "attendance") renderAttendanceView();
+      else if (tabId === "commission") renderCommissionView();
+      else if (tabId === "team") renderTeamView();
+      else if (tabId === "leads") renderLeadsView();
+      else if (tabId === "reports") renderReportsView();
+    }
+  }
+
+  // 7. Master Render All Cards
   function renderAll(animate = true) {
     if (!state.data) return;
 
@@ -922,6 +1342,13 @@
     renderSideCard();
     renderTable();
     renderFeed();
+
+    // Render active sub-view
+    if (state.activeTab === "attendance") renderAttendanceView();
+    else if (state.activeTab === "commission") renderCommissionView();
+    else if (state.activeTab === "team") renderTeamView();
+    else if (state.activeTab === "leads") renderLeadsView();
+    else if (state.activeTab === "reports") renderReportsView();
   }
 
   /* ---------- Data Loading Flow ---------- */
@@ -1005,13 +1432,77 @@
     el.navButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
         const navId = btn.dataset.nav;
-        if (navId === "overview") {
-          closeSidebar();
-          return;
-        }
-        showToast(t("toastComingSoon", { name: t("nav_" + navId) }), "info");
+        switchTab(navId);
+        closeSidebar();
       });
     });
+
+    // Subview 1: Attendance filters & actions
+    if (el.attSearch) {
+      el.attSearch.addEventListener("input", () => {
+        state.attQuery = el.attSearch.value.trim();
+        renderAttendanceView();
+      });
+    }
+    if (el.attStatusFilter) {
+      el.attStatusFilter.addEventListener("change", () => {
+        state.attStatus = el.attStatusFilter.value;
+        renderAttendanceView();
+      });
+    }
+    if (el.btnExportAtt) {
+      el.btnExportAtt.addEventListener("click", () => {
+        showToast(t("att_toast_export"), "success");
+      });
+    }
+
+    // Subview 2: Commission actions
+    if (el.btnSubmitPayroll) {
+      el.btnSubmitPayroll.addEventListener("click", () => {
+        showToast(t("comm_toast_payroll"), "success");
+      });
+    }
+
+    // Subview 3: Team Directory filters
+    if (el.teamSearch) {
+      el.teamSearch.addEventListener("input", () => {
+        state.teamQuery = el.teamSearch.value.trim();
+        renderTeamView();
+      });
+    }
+    if (el.teamDivisionFilter) {
+      el.teamDivisionFilter.addEventListener("change", () => {
+        state.teamDivision = el.teamDivisionFilter.value;
+        renderTeamView();
+      });
+    }
+
+    // Subview 4: Leads Pipeline filters & actions
+    if (el.leadsSearch) {
+      el.leadsSearch.addEventListener("input", () => {
+        state.leadsQuery = el.leadsSearch.value.trim();
+        renderLeadsView();
+      });
+    }
+    if (el.btnAddLead) {
+      el.btnAddLead.addEventListener("click", () => {
+        showToast(t("leads_toast_add"), "info");
+      });
+    }
+
+    // Subview 5: Branch Reports actions
+    if (el.btnDownloadPdf) {
+      el.btnDownloadPdf.addEventListener("click", () => {
+        const branchName = (state.data && state.data.branchName) || "Dealer";
+        showToast(t("rep_toast_pdf", { branch: branchName }), "success");
+      });
+    }
+    if (el.btnDownloadExcel) {
+      el.btnDownloadExcel.addEventListener("click", () => {
+        const branchName = (state.data && state.data.branchName) || "Dealer";
+        showToast(t("rep_toast_excel", { branch: branchName }), "success");
+      });
+    }
 
     // User menu dropdown
     el.userMenuBtn.addEventListener("click", (e) => {

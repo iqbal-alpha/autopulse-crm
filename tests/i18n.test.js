@@ -27,5 +27,8 @@ test("every dynamic key derived from data exists", () => {
   ["annual", "sick", "permit"].forEach((v) => needed.add(`leave_${v}`));
   ["service10k", "brake", "ac", "tire", "oil"].forEach((v) => needed.add(`job_${v}`));
   ["overview", "attendance", "commission", "team", "leads", "reports"].forEach((v) => needed.add(`nav_${v}`));
+  ["payroll_ready", "payroll_review"].forEach((v) => needed.add(v));
+  ["shift_morning", "shift_afternoon"].forEach((v) => needed.add(v));
+  ["stage_inquiry", "stage_contacted", "stage_testdrive", "stage_negotiation", "stage_delivered"].forEach((v) => needed.add(v));
   for (const key of needed) assert.ok(key in I18N.id, `missing key: ${key}`);
 });

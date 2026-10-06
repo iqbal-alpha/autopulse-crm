@@ -63,27 +63,22 @@
         <button type="button" class="nav-item" data-nav="attendance">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span class="nav-label" data-i18n="nav_attendance">Presensi Staf</span>
-          <span class="soon-badge" data-i18n="comingSoon">Segera hadir</span>
         </button>
         <button type="button" class="nav-item" data-nav="commission">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           <span class="nav-label" data-i18n="nav_commission">Insentif SPK</span>
-          <span class="soon-badge" data-i18n="comingSoon">Segera hadir</span>
         </button>
         <button type="button" class="nav-item" data-nav="team">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
           <span class="nav-label" data-i18n="nav_team">Direktori Tim</span>
-          <span class="soon-badge" data-i18n="comingSoon">Segera hadir</span>
         </button>
         <button type="button" class="nav-item" data-nav="leads">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           <span class="nav-label" data-i18n="nav_leads">Pipeline Prospek</span>
-          <span class="soon-badge" data-i18n="comingSoon">Segera hadir</span>
         </button>
         <button type="button" class="nav-item" data-nav="reports">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
           <span class="nav-label" data-i18n="nav_reports">Laporan Cabang</span>
-          <span class="soon-badge" data-i18n="comingSoon">Segera hadir</span>
         </button>
       </nav>
 
@@ -166,90 +161,291 @@
 
       <!-- Main content body -->
       <main id="main-content" class="dash-content" tabindex="-1">
-        <!-- KPI Row -->
-        <section id="kpi-grid" class="kpi-grid" aria-label="Indikator Kinerja Utama">
-          <!-- Rendered dynamically by JS -->
-        </section>
+        <!-- ==================== SUB-VIEW 0: OVERVIEW ==================== -->
+        <div id="view-overview" class="subview-panel">
+          <!-- KPI Row -->
+          <section id="kpi-grid" class="kpi-grid" aria-label="Indikator Kinerja Utama">
+            <!-- Rendered dynamically by JS -->
+          </section>
 
-        <!-- Operational Grid (Charts, Table, Feed) -->
-        <div class="dash-grid">
-          <!-- Main Chart Card -->
-          <article id="chart-card" class="dash-card card-chart">
-            <div class="card-header">
-              <div class="card-title-group">
-                <h2 id="chart-title" class="card-title" data-i18n="chartAttendanceTitle">Tren Kehadiran 30 Hari per Divisi</h2>
-              </div>
-              <div class="card-actions">
-                <div id="range-group" class="range-btn-group" role="group" aria-label="Rentang Waktu">
-                  <button type="button" class="range-btn" data-range="7" data-i18n="range7">7 Hari</button>
-                  <button type="button" class="range-btn is-active" data-range="30" data-i18n="range30" aria-pressed="true">30 Hari</button>
+          <!-- Operational Grid (Charts, Table, Feed) -->
+          <div class="dash-grid">
+            <!-- Main Chart Card -->
+            <article id="chart-card" class="dash-card card-chart">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 id="chart-title" class="card-title" data-i18n="chartAttendanceTitle">Tren Kehadiran 30 Hari per Divisi</h2>
+                </div>
+                <div class="card-actions">
+                  <div id="range-group" class="range-btn-group" role="group" aria-label="Rentang Waktu">
+                    <button type="button" class="range-btn" data-range="7" data-i18n="range7">7 Hari</button>
+                    <button type="button" class="range-btn is-active" data-range="30" data-i18n="range30" aria-pressed="true">30 Hari</button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div id="chart-legend" class="chart-legend" role="group" aria-label="Filter Seri Grafik"></div>
-            <div id="chart-body" class="chart-body" role="img" aria-label="Grafik data operasional"></div>
-            <div id="chart-tooltip" class="chart-tooltip" role="status" aria-live="polite" hidden></div>
-            <div id="chart-sr" class="sr-only"></div>
-          </article>
+              <div id="chart-legend" class="chart-legend" role="group" aria-label="Filter Seri Grafik"></div>
+              <div id="chart-body" class="chart-body" role="img" aria-label="Grafik data operasional"></div>
+              <div id="chart-tooltip" class="chart-tooltip" role="status" aria-live="polite" hidden></div>
+              <div id="chart-sr" class="sr-only"></div>
+            </article>
 
-          <!-- Side Card (Donut / Gauge) -->
-          <article id="side-card" class="dash-card card-side">
-            <div class="card-header">
-              <h2 id="side-title" class="card-title" data-i18n="sideDonutTitle">Komposisi Status Staf Hari Ini</h2>
-            </div>
-            <div id="side-body" class="side-body" role="img" aria-label="Grafik ringkasan status"></div>
-            <div id="side-legend" class="side-legend"></div>
-          </article>
+            <!-- Side Card (Donut / Gauge) -->
+            <article id="side-card" class="dash-card card-side">
+              <div class="card-header">
+                <h2 id="side-title" class="card-title" data-i18n="sideDonutTitle">Komposisi Status Staf Hari Ini</h2>
+              </div>
+              <div id="side-body" class="side-body" role="img" aria-label="Grafik ringkasan status"></div>
+              <div id="side-legend" class="side-legend"></div>
+            </article>
 
-          <!-- Detail Table Card -->
-          <article id="table-card" class="dash-card card-table">
+            <!-- Detail Table Card -->
+            <article id="table-card" class="dash-card card-table">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 id="table-title" class="card-title" data-i18n="tableStaffTitle">Status Kehadiran &amp; Skor KPI Staf</h2>
+                </div>
+                <div class="card-actions table-tools">
+                  <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="search" id="table-search" class="dash-search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Cari nama staf atau wiraniaga…">
+                  </div>
+                  <div class="select-wrapper">
+                    <label for="division-filter" class="sr-only" data-i18n="filterDivision">Divisi</label>
+                    <select id="division-filter" class="dash-select" data-i18n-aria="filterDivision" aria-label="Divisi">
+                      <option value="all" data-i18n="allDivisions">Semua Divisi</option>
+                      <option value="sales" data-i18n="div_sales">Sales Consultant</option>
+                      <option value="tech" data-i18n="div_tech">Teknisi Bengkel</option>
+                      <option value="sa" data-i18n="div_sa">Service Advisor</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="data-table" class="dash-table">
+                  <thead id="table-head"></thead>
+                  <tbody id="table-body"></tbody>
+                </table>
+              </div>
+              <div class="table-footer">
+                <p id="table-count" class="table-count"></p>
+                <div id="table-empty" class="empty-box" hidden>
+                  <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+                </div>
+              </div>
+            </article>
+
+            <!-- Activity / Queue Feed Card -->
+            <article id="feed-card" class="dash-card card-feed">
+              <div class="card-header">
+                <div class="feed-title-wrap">
+                  <h2 id="feed-title" class="card-title" data-i18n="feedLeaveTitle">Pengajuan Cuti Menunggu Persetujuan</h2>
+                  <span id="feed-count" class="badge-count">4</span>
+                </div>
+              </div>
+              <ul id="feed-list" class="feed-list" role="list"></ul>
+              <div id="feed-empty" class="empty-box" hidden>
+                <p data-i18n="feedEmpty">Semua pengajuan telah diproses.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 1: ATTENDANCE ==================== -->
+        <div id="view-attendance" class="subview-panel" hidden>
+          <div id="att-summary-grid" class="kpi-grid"></div>
+
+          <article class="dash-card subview-card">
             <div class="card-header">
               <div class="card-title-group">
-                <h2 id="table-title" class="card-title" data-i18n="tableStaffTitle">Status Kehadiran &amp; Skor KPI Staf</h2>
+                <h2 class="card-title" data-i18n="att_card_log">Catatan Presensi &amp; Jam Kerja Harian</h2>
               </div>
               <div class="card-actions table-tools">
                 <div class="search-input-wrapper">
                   <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  <input type="search" id="table-search" class="dash-search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Cari nama staf atau wiraniaga…">
+                  <input type="search" id="att-search" class="dash-search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Cari nama staf atau wiraniaga…">
                 </div>
                 <div class="select-wrapper">
-                  <label for="division-filter" class="sr-only" data-i18n="filterDivision">Divisi</label>
-                  <select id="division-filter" class="dash-select" data-i18n-aria="filterDivision" aria-label="Divisi">
-                    <option value="all" data-i18n="allDivisions">Semua Divisi</option>
-                    <option value="sales" data-i18n="div_sales">Sales Consultant</option>
-                    <option value="tech" data-i18n="div_tech">Teknisi Bengkel</option>
-                    <option value="sa" data-i18n="div_sa">Service Advisor</option>
+                  <select id="att-status-filter" class="dash-select">
+                    <option value="all">Semua Status</option>
+                    <option value="present">Hadir Tepat Waktu</option>
+                    <option value="late">Terlambat</option>
+                    <option value="leave">Cuti Resmi</option>
+                    <option value="sick">Izin Sakit</option>
                   </select>
                 </div>
+                <button type="button" id="btn-export-att" class="btn btn-outline btn-compact">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span data-i18n="att_btn_export">Ekspor Presensi (Excel)</span>
+                </button>
               </div>
             </div>
             <div class="table-wrap">
-              <table id="data-table" class="dash-table">
-                <thead id="table-head"></thead>
-                <tbody id="table-body"></tbody>
+              <table id="att-table" class="dash-table">
+                <thead id="att-table-head"></thead>
+                <tbody id="att-table-body"></tbody>
               </table>
             </div>
             <div class="table-footer">
-              <p id="table-count" class="table-count"></p>
-              <div id="table-empty" class="empty-box" hidden>
+              <p id="att-count" class="table-count"></p>
+              <div id="att-empty" class="empty-box" hidden>
                 <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
               </div>
             </div>
           </article>
+        </div>
 
-          <!-- Activity / Queue Feed Card -->
-          <article id="feed-card" class="dash-card card-feed">
+        <!-- ==================== SUB-VIEW 2: COMMISSION ==================== -->
+        <div id="view-commission" class="subview-panel" hidden>
+          <div id="comm-summary-grid" class="kpi-grid"></div>
+
+          <div id="comm-rule-box" class="info-banner">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span data-i18n="comm_rule_note">Ketentuan: Komisi Rp 1.500.000/SPK + bonus akselerator Rp 500.000/unit untuk pencapaian di atas 10 unit.</span>
+          </div>
+
+          <article class="dash-card subview-card">
             <div class="card-header">
-              <div class="feed-title-wrap">
-                <h2 id="feed-title" class="card-title" data-i18n="feedLeaveTitle">Pengajuan Cuti Menunggu Persetujuan</h2>
-                <span id="feed-count" class="badge-count">4</span>
+              <div class="card-title-group">
+                <h2 class="card-title" data-i18n="comm_card_table">Rincian Insentif per Wiraniaga</h2>
+              </div>
+              <div class="card-actions">
+                <button type="button" id="btn-submit-payroll" class="btn btn-primary btn-compact">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <span data-i18n="comm_btn_payroll">Ajukan Batch Payroll</span>
+                </button>
               </div>
             </div>
-            <ul id="feed-list" class="feed-list" role="list"></ul>
-            <div id="feed-empty" class="empty-box" hidden>
-              <p data-i18n="feedEmpty">Semua pengajuan telah diproses.</p>
+            <div class="table-wrap">
+              <table id="comm-table" class="dash-table">
+                <thead id="comm-table-head"></thead>
+                <tbody id="comm-table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <p id="comm-count" class="table-count"></p>
             </div>
           </article>
+        </div>
+
+        <!-- ==================== SUB-VIEW 3: TEAM DIRECTORY ==================== -->
+        <div id="view-team" class="subview-panel" hidden>
+          <div class="team-toolbar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="team-search" class="dash-search-input" data-i18n-placeholder="team_search_ph" placeholder="Cari nama staf, jabatan, atau NIP…">
+            </div>
+            <div class="select-wrapper">
+              <select id="team-division-filter" class="dash-select">
+                <option value="all" data-i18n="team_filter_all">Semua Karyawan</option>
+                <option value="sales" data-i18n="div_sales">Sales Consultant</option>
+                <option value="tech" data-i18n="div_tech">Teknisi Bengkel</option>
+                <option value="sa" data-i18n="div_sa">Service Advisor</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="team-grid" class="team-cards-grid"></div>
+          <div id="team-empty" class="empty-box" hidden>
+            <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 4: LEADS PIPELINE ==================== -->
+        <div id="view-leads" class="subview-panel" hidden>
+          <div id="leads-funnel-grid" class="funnel-grid"></div>
+
+          <article class="dash-card subview-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2 class="card-title" data-i18n="leads_card_table">Daftar Pelanggan Prospektif Aktif</h2>
+              </div>
+              <div class="card-actions table-tools">
+                <div class="search-input-wrapper">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="search" id="leads-search" class="dash-search-input" placeholder="Cari pelanggan, model mobil, atau sales…">
+                </div>
+                <button type="button" id="btn-add-lead" class="btn btn-primary btn-compact">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span data-i18n="leads_btn_add">Tambah Prospek Baru</span>
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="leads-table" class="dash-table">
+                <thead id="leads-table-head"></thead>
+                <tbody id="leads-table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <p id="leads-count" class="table-count"></p>
+              <div id="leads-empty" class="empty-box" hidden>
+                <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- ==================== SUB-VIEW 5: BRANCH REPORTS ==================== -->
+        <div id="view-reports" class="subview-panel" hidden>
+          <div class="reports-header-card dash-card">
+            <div class="reports-header-info">
+              <span class="report-tag" data-i18n="rep_month_label">Periode: Oktober 2026</span>
+              <h2 class="reports-header-title" data-i18n="rep_header">Ringkasan Laporan Operasional Bulanan</h2>
+            </div>
+            <div class="reports-header-actions">
+              <button type="button" id="btn-download-pdf" class="btn btn-outline btn-compact">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span data-i18n="rep_btn_pdf">Unduh Laporan Resmi (PDF)</span>
+              </button>
+              <button type="button" id="btn-download-excel" class="btn btn-primary btn-compact">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span data-i18n="rep_btn_excel">Ekspor Data Analitik (Excel)</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="rep-kpi-grid" class="kpi-grid"></div>
+
+          <div class="reports-grid">
+            <article id="rep-summary-card" class="dash-card">
+              <div class="card-header">
+                <h3 class="card-title" data-i18n="rep_header">Ringkasan Laporan Operasional Bulanan</h3>
+              </div>
+              <div class="card-body-padded">
+                <div class="report-stats-list">
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_sales_score">Pencapaian Target Penjualan (SPK)</span>
+                    <strong id="rep-stat-spk" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_service_score">Volume Unit Servis Bengkel</span>
+                    <strong id="rep-stat-service" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_csat_score">Skor Kepuasan Pelanggan (CSAT)</span>
+                    <strong id="rep-stat-csat" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_parts_score">Efisiensi Perputaran Sparepart</span>
+                    <strong id="rep-stat-parts" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_sop_score">Kepatuhan SOP &amp; Audit Dealer</span>
+                    <strong id="rep-stat-sop" class="report-stat-val">—</strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="dash-card">
+              <div class="card-header">
+                <h3 class="card-title" data-i18n="rep_highlights">Sorotan Utama Operasional Cabang</h3>
+              </div>
+              <div class="card-body-padded">
+                <ul id="rep-highlights-list" class="highlights-list"></ul>
+              </div>
+            </article>
+          </div>
         </div>
 
         <footer class="dash-footer">

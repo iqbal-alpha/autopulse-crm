@@ -130,3 +130,60 @@ test("HRD commission equals BM units sold x 1.5 (juta rupiah)", () => {
     assert.equal(hrd, round1(units * 1.5));
   }
 });
+
+test("all 5 subviews have deterministic, valid datasets", () => {
+  for (const branch of Data.BRANCH_KEYS) {
+    for (const role of Data.ROLES) {
+      const d = Data.getDashboardData(role, branch);
+
+      // 1. Attendance detail
+      assert.ok(Array.isArray(d.attendanceDetail));
+      assert.equal(d.attendanceDetail.length, HEADCOUNT[branch]);
+      for (const row of d.attendanceDetail) {
+        assert.match(row.nip, /^1023\d{2}$/);
+        assert.ok(row.name.length > 2);
+        assert.ok(row.roleTitle.length > 3);
+        assert.ok(["shift_morning", "shift_afternoon"].includes(row.shift));
+        assert.ok(["present", "late", "leave", "sick"].includes(row.status));
+        assert.ok(row.email.endsWith("@autopulse.id"));
+        assert.match(row.ext, /^10\d{2}$/);
+      }
+
+      // 2. Commission list
+      assert.ok(Array.isArray(d.commissionList));
+      assert.ok(d.commissionList.length > 0);
+      for (const comm of d.commissionList) {
+        assert.ok(comm.target > 0);
+        assert.ok(comm.spk >= 0);
+        assert.ok(comm.base >= 0);
+        assert.ok(comm.total >= comm.base);
+        assert.ok(["payroll_ready", "payroll_review"].includes(comm.status));
+      }
+
+      // 3. Team directory
+      assert.ok(Array.isArray(d.teamDirectory));
+      assert.equal(d.teamDirectory.length, HEADCOUNT[branch]);
+
+      // 4. Leads pipeline
+      assert.ok(Array.isArray(d.leadsList));
+      assert.equal(d.leadsList.length, 12);
+      for (const lead of d.leadsList) {
+        assert.ok(lead.customer.length > 3);
+        assert.ok(lead.model.startsWith("AutoPulse"));
+        assert.ok(["stage_inquiry", "stage_contacted", "stage_testdrive", "stage_negotiation", "stage_delivered"].includes(lead.stage));
+        assert.match(lead.phone, /^\+62 812-\d{4}-\d{3,4}$/);
+      }
+
+      // 5. Branch report
+      assert.ok(d.branchReport);
+      assert.equal(d.branchReport.period, "Oktober 2026");
+      assert.ok(d.branchReport.spkActual > 0);
+      assert.ok(d.branchReport.spkTarget > 0);
+      assert.ok(d.branchReport.csat >= 4.0 && d.branchReport.csat <= 5.0);
+      assert.ok(d.branchReport.partsTurnover >= 90);
+      assert.ok(d.branchReport.sopCompliance >= 95);
+      assert.ok(d.branchReport.highlights.length >= 3);
+    }
+  }
+});
+

@@ -87,7 +87,17 @@
         if (status === "present") checkIn = `07:${pad2(intBetween(rng, 30, 59))}`;
         if (status === "late") checkIn = `08:${pad2(intBetween(rng, 16, 45))}`;
         const score = leader ? intBetween(rng, 90, 98) : intBetween(rng, 62, 95);
-        rows.push({ id: `${branch}-${pad2(n)}`, name, division, status, checkIn, kpi: score });
+        const nip = `1023${pad2(n)}`;
+        const roleTitle = division === "sales" ? (leader ? "Senior Sales Consultant" : "Sales Consultant")
+          : (division === "tech" ? (score > 90 ? "Master Diagnostic Technician" : "Service Technician")
+          : "Service Advisor");
+        const cleanName = name.replace(/[^a-zA-Z]/g, "").toLowerCase();
+        const email = `${cleanName}@autopulse.id`;
+        const ext = `10${pad2((n * 7) % 80 + 10)}`;
+        const shift = n % 3 === 0 ? "shift_afternoon" : "shift_morning";
+        const checkOut = status === "present" ? "17:00" : (status === "late" ? "17:30" : "—");
+        const note = status === "late" ? "Kendala lalu lintas tol" : (status === "leave" ? "Cuti tahunan disetujui" : (status === "sick" ? "Surat keterangan dokter" : "Tepat waktu"));
+        rows.push({ id: `${branch}-${pad2(n)}`, nip, name, roleTitle, division, status, checkIn, checkOut, shift, email, ext, note, kpi: score });
       }
     });
     return rows;
@@ -106,6 +116,76 @@
         activeLeads: intBetween(rng, 4, 16),
       }))
       .sort((a, b) => b.spk - a.spk);
+  }
+
+  function buildCommissions(sales) {
+    return sales.map((s) => {
+      const spk = s.spk;
+      const target = s.target;
+      const pct = Math.round((spk / target) * 100);
+      const base = spk * 1500000;
+      const bonus = spk >= 12 ? (spk - 10) * 500000 : 0;
+      const total = base + bonus;
+      const status = spk >= 8 ? "payroll_ready" : "payroll_review";
+      return { id: s.id, name: s.name, target, spk, pct, base, bonus, total, status };
+    });
+  }
+
+  const CAR_MODELS = [
+    "AutoPulse Chronos EV (Sedan)",
+    "AutoPulse Eclipse Pro (SUV Hybrid)",
+    "AutoPulse Horizon (MPV 7-Seater)",
+    "AutoPulse Turbo Apex (Coupe)",
+    "AutoPulse Nova (Compact City)"
+  ];
+  const CUSTOMERS = [
+    "Bpk. Hendra Gunawan", "Ibu Ratna Dewi", "Bpk. Aditya Pratama", "Ibu Felicia Tan",
+    "Bpk. Bambang Wijaya", "Ibu Maya Angelina", "Bpk. Dedy Susanto", "Ibu Cindy Claudia",
+    "Bpk. Rudi Hartono", "Ibu Siska Amelia", "Bpk. William Salim", "Ibu Ratih Kurnia"
+  ];
+  const STAGES = ["stage_inquiry", "stage_contacted", "stage_testdrive", "stage_negotiation", "stage_delivered"];
+
+  function buildLeads(branch, rng, sales) {
+    return CUSTOMERS.map((cust, i) => {
+      const model = CAR_MODELS[i % CAR_MODELS.length];
+      const stage = STAGES[i % STAGES.length];
+      const consultant = sales[i % sales.length].name;
+      const date = `Okt ${intBetween(rng, 10, 24)}, 2026`;
+      return {
+        id: `lead-${branch}-${i + 1}`,
+        customer: cust,
+        model,
+        stage,
+        consultant,
+        date,
+        phone: `+62 812-${intBetween(rng, 1000, 9999)}-${intBetween(rng, 100, 999)}`,
+      };
+    });
+  }
+
+  function buildBranchReport(branch, rng, staff, sales) {
+    const totalSpk = sales.reduce((sum, r) => sum + r.spk, 0);
+    const targetSpk = sales.length * SALES_TARGET;
+    const spkPct = Math.round((totalSpk / targetSpk) * 100);
+    const serviceTarget = Math.round(BRANCH_PROFILE[branch].scale * 38);
+    const csat = round(between(rng, 4.5, 4.9), 1);
+    const partsTurnover = round(between(rng, 92, 98), 1);
+    const sopCompliance = round(between(rng, 96, 99.5), 1);
+    return {
+      period: "Oktober 2026",
+      spkActual: totalSpk,
+      spkTarget: targetSpk,
+      spkPct,
+      serviceActual: serviceTarget,
+      csat,
+      partsTurnover,
+      sopCompliance,
+      highlights: [
+        "Realisasi pemesanan unit kategori SUV melampaui target cabang.",
+        "Efisiensi stall bengkel servis meningkat dengan waktu pengerjaan 48 menit.",
+        "Tingkat disiplin presensi staf showroom & bengkel stabil di atas 94%."
+      ]
+    };
   }
 
   /* ---------- Role views ---------- */
@@ -198,9 +278,22 @@
     const rng = createRng(hashString(`autopulse:${b}`));
     const staff = buildStaff(b, rng);
     const sales = buildSales(b, rng, staff);
+    const commissions = buildCommissions(sales);
+    const leads = buildLeads(b, rng, sales);
+    const reports = buildBranchReport(b, rng, staff, sales);
     // Role-specific RNG stream so both roles share identical staff/sales data.
     const roleRng = createRng(hashString(`autopulse:${b}:${r}`));
-    const base = { role: r, branch: b, branchName: BRANCH_PROFILE[b].name, headcount: staff.length };
+    const base = {
+      role: r,
+      branch: b,
+      branchName: BRANCH_PROFILE[b].name,
+      headcount: staff.length,
+      attendanceDetail: staff,
+      commissionList: commissions,
+      teamDirectory: staff,
+      leadsList: leads,
+      branchReport: reports,
+    };
     return Object.assign(base, r === "hrd" ? buildHrd(b, roleRng, staff, sales) : buildBm(b, roleRng, staff, sales));
   }
 
