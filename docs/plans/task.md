@@ -18,12 +18,12 @@
 | 16 | Dashboard: Present design & get approval | Completed | All 3 sections approved |
 | 17 | Dashboard: Write design doc | Completed | `docs/plans/2026-10-06-dashboard-design.md` (git not installed → no commit) |
 | 18 | Dashboard: Write implementation plan | Completed | `docs/plans/2026-10-06-dashboard.md`; plan code pre-checked: 19/19 tests pass |
-| 19 | Exec Task 1: `session.js` + tests | Pending | |
-| 20 | Exec Task 2: `dashboard-data.js` + tests | Pending | |
-| 21 | Exec Task 3: `dashboard-i18n.js` + tests | Pending | |
-| 22 | Exec Task 4: Login integration | Pending | |
-| 23 | Exec Task 5: `dashboard.html` | Pending | |
-| 24 | Exec Task 6: `dashboard.css` | Pending | |
-| 25 | Exec Task 7: `dashboard.js` | Pending | |
-| 26 | Exec Task 8: Integrity test | Pending | |
-| 27 | Exec Task 9: Browser verification | Pending | |
+| 19 | Exec Task 1: `session.js` + tests | Completed | 10/10 tests pass, git commit 65934f2 |
+| 20 | Exec Task 2: `dashboard-data.js` + tests | Completed | 9/9 tests pass (total 19/19), git commit 6dca675 |
+| 21 | Exec Task 3: `dashboard-i18n.js` + tests | Completed | 3/3 tests pass (total 22/22), git commit b5c90fc |
+| 22 | Exec Task 4: Login integration | Completed | session saved on login, redirect + expired handling, git commit 93b40fe |
+| 23 | Exec Task 5: `dashboard.html` | Completed | semantic shell with all IDs and hooks, git commit 48723cb |
+| 24 | Exec Task 6: `dashboard.css` | Completed | full responsive glassmorphism styles, git commit e098189 |
+| 25 | Exec Task 7: `dashboard.js` | Completed | full reactive logic + SVG charts + state management, git commit e03f6cf |
+| 26 | Exec Task 8: Integrity test | Completed | 30/30 unit & integrity tests pass, git commit 6f29124 |
+| 27 | Exec Task 9: Browser verification | Completed | 30/30 tests pass; HTTP 200 OK on all routes; local server active at http://127.0.0.1:5500 |
