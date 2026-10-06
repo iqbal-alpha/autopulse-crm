@@ -13,7 +13,7 @@
 
 ## 🚀 Live Demo & Quick Access
 
-- **Live URL:** [https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)
+- **Live URL:** [[https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)](https://iqbal-alpha.github.io/autopulse-crm/)
 - **Demo Account (Pre-filled):**
   - **NIP / Employee ID:** `10230045`
   - **Work Email:** `rina.kartika@autopulse.id`
