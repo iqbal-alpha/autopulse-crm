@@ -33,6 +33,8 @@
   const SALES_TARGET = 10;
   const FORCE_OFFLINE = new URLSearchParams(window.location.search).get("offline") === "1";
   const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DASHBOARD_URL = "dashboard.html";
+  const REDIRECT_MS = 1600;
 
   /* ---------- Dictionary ---------- */
   const I18N = {
@@ -95,8 +97,9 @@
       internalExt: "Telepon internal",
       successTitle: "Login berhasil",
       successRole: "{role} · Cabang {branch}",
-      successNote: "Ini adalah demo frontend portofolio. Halaman dashboard akan hadir pada tahap berikutnya.",
-      backToLogin: "Kembali ke halaman login",
+      successNote: "Mengalihkan Anda ke dashboard…",
+      openDashboard: "Buka Dashboard",
+      errExpired: "Sesi Anda telah berakhir. Silakan masuk kembali.",
       errIdRequired: "NIP atau email wajib diisi.",
       errIdFormat: "Gunakan NIP 6–12 digit atau email perusahaan yang valid.",
       errPwdRequired: "Kata sandi wajib diisi.",
@@ -173,8 +176,9 @@
       internalExt: "Internal phone",
       successTitle: "Signed in successfully",
       successRole: "{role} · {branch} branch",
-      successNote: "This is a portfolio frontend demo. The dashboard will arrive in the next phase.",
-      backToLogin: "Back to sign in",
+      successNote: "Taking you to your dashboard…",
+      openDashboard: "Open Dashboard",
+      errExpired: "Your session has ended. Please sign in again.",
       errIdRequired: "Employee ID or email is required.",
       errIdFormat: "Use a 6–12 digit Employee ID or a valid work email.",
       errPwdRequired: "Password is required.",
@@ -266,7 +270,7 @@
     successModal: $("#success-modal"),
     successName: $("#success-name"),
     successRole: $("#success-role"),
-    btnBack: $("#btn-back"),
+    btnOpenDashboard: $("#btn-open-dashboard"),
     toast: $("#toast"),
     pulseContent: $("#pulse-content"),
     pulseFallback: $("#pulse-fallback"),
@@ -304,6 +308,7 @@
     toastTimer: null,
     lastFocus: null,
     openModal: null,
+    redirectTimer: null,
   };
 
   /* ---------- Helpers ---------- */
@@ -672,8 +677,12 @@
       state.attempts = 0;
       if (el.remember.checked) storage.set(STORAGE.identifier, el.identifier.value.trim());
       else storage.remove(STORAGE.identifier);
+      if (window.AutoPulseSession) {
+        window.AutoPulseSession.save({ name: DEMO_ACCOUNT.name, role: "hrd", branch: el.branch.value });
+      }
       openModal(el.successModal);
       renderSuccess();
+      state.redirectTimer = setTimeout(goToDashboard, REDIRECT_MS);
       return;
     }
 
@@ -729,7 +738,7 @@
     if (!state.openModal) return;
     if (event.key === "Escape") {
       event.preventDefault();
-      if (state.openModal === el.successModal) backToLogin();
+      if (state.openModal === el.successModal) goToDashboard();
       else closeModal();
       return;
     }
@@ -748,12 +757,9 @@
     }
   }
 
-  function backToLogin() {
-    closeModal();
-    el.password.value = "";
-    el.password.type = "password";
-    updatePwdToggleLabel();
-    el.password.focus();
+  function goToDashboard() {
+    clearTimeout(state.redirectTimer);
+    window.location.href = DASHBOARD_URL;
   }
 
   /* ---------- Event wiring ---------- */
@@ -801,7 +807,7 @@
     el.forgot.addEventListener("click", () => showToast("toastForgot"));
     el.hrLink.addEventListener("click", () => openModal(el.hrModal));
     $$("[data-close-modal]").forEach((node) => node.addEventListener("click", closeModal));
-    el.btnBack.addEventListener("click", backToLogin);
+    el.btnOpenDashboard.addEventListener("click", goToDashboard);
     document.addEventListener("keydown", handleKeydown);
 
     // Follow OS theme changes only while the user has not chosen a theme explicitly.
@@ -824,6 +830,14 @@
     const savedLang = storage.get(STORAGE.lang);
     const browserLang = (navigator.language || "id").toLowerCase().startsWith("id") ? "id" : "en";
     applyLanguage(savedLang || browserLang, false);
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("expired") === "1") {
+      setAlert({ key: "errExpired", warning: true });
+      params.delete("expired");
+      const query = params.toString();
+      history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : ""));
+    }
 
     bindEvents();
     setInterval(updateClock, 1000);
