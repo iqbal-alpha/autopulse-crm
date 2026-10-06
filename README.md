@@ -5,7 +5,6 @@
 [![HTML5](https://img.shields.io/badge/HTML5-Semantic_A11y-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![Tests](https://img.shields.io/badge/Tests-31%20Passing%20(100%25)-success)](https://nodejs.org/api/test.html)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blueviolet)](#technology-stack)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **AutoPulse CRM** is an enterprise-grade automotive 3S (*Sales, Service, Spare Parts*) dealership operations and workforce management web application. Designed for multi-branch dealership networks, it unifies daily attendance discipline, vehicle sales commission pipelines, showroom lead stages, workshop stall telemetry, and branch executive reports into a responsive, high-performance interface.
 
@@ -135,8 +134,3 @@ node --test "tests/*.test.js"
   - HTML ID uniqueness and 100% selector consistency between JavaScript and HTML templates.
   - Session timeout, role validation, and storage fail-safe handling.
 
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE) — feel free to use it for portfolio and demonstration purposes.
