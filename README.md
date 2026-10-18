@@ -1,132 +1,136 @@
 # AutoPulse CRM — Automotive Dealership & Workforce Management System
 
 [![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-ES6+-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![CSS3](https://img.shields.io/badge/CSS3-Modern_Tokens-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![CSS3](https://img.shields.io/badge/CSS3-Tokens-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![HTML5](https://img.shields.io/badge/HTML5-Semantic_A11y-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![Tests](https://img.shields.io/badge/Tests-18%20Passing%20(100%25)-success)](https://nodejs.org/api/test.html)
 [![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_Demo-black?logo=vercel&logoColor=white)](https://autopulse-crm.vercel.app/)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blueviolet)](#technology-stack)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-**AutoPulse CRM** is an enterprise-grade automotive 3S (*Sales, Service, Spare Parts*) dealership operations and workforce management web application. Designed for multi-branch dealership networks, it unifies daily attendance discipline, vehicle sales commission pipelines, showroom lead stages, workshop stall telemetry, and branch executive reports into a responsive, high-performance interface.
+AutoPulse CRM is an automotive 3S (Sales, Service, Spare Parts) dealership and workforce management system. Built entirely on vanilla web standards with zero third-party dependencies, it provides real-time operational telemetry, staff attendance tracking, vehicle sales pipelines, commission calculations, and branch performance analytics.
 
 ---
 
-## 🚀 Live Demo & Quick Access
+## Live Access
 
-- **Live Production URL (Vercel):** [https://autopulse-crm.vercel.app/](https://autopulse-crm.vercel.app/)
-- **GitHub Pages Mirror:** [https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)
-- **Direct Access (Zero Gatekeeping):** Instant access to the complete operational dashboard without any login wall or credential entry required.
-- **Adaptive Personas & Dealership Branches:** Switch roles on the fly between **HRD & People Operations** and **Branch Manager**, and toggle across 5 major dealership branches (*Jakarta Pusat, BSD City, Bandung, Surabaya, Medan*) directly from the top navigation bar. Preferences persist automatically in `localStorage`.
-
----
-
-## 🌟 Core Features & Modules
-
-### 1. Multi-Role Adaptive Dashboard
-- **HRD & People Operations View:**
-  - 4 Key Metrics: Staff Attendance Rate, Approved Leaves, Workshop Stall Utilization, and Estimated SPK Commission.
-  - 30-Day Attendance Trend Line Chart (custom SVG with 7d/30d filter & department series toggle).
-  - Staff Status Composition Donut Chart.
-  - Leave Request Approval Queue with interactive *Approve* and *Reject* workflows.
-- **Branch Manager View:**
-  - 4 Key Metrics: Delivered Units (SPK), Workshop Service Volume, Lead-to-SPK Conversion, and Dealership CSAT.
-  - 8-Week Sales Realization vs Target Bar Chart (custom SVG with weekly targets).
-  - Monthly Dealership Target Achievement Semicircle Gauge.
-  - Top Sales Consultant Leaderboard & active leads ranking.
-  - Workshop Stall Telemetry Queue (*In Progress*, *Queued*, *Past Due*).
-
-### 2. Integrated Sub-View Modules
-- **Presensi Staf (Staff Attendance & Punctuality):** Daily shift records (morning/afternoon), check-in/out timestamps, status filtering, and simulated Excel attendance export.
-- **Insentif SPK (Vehicle Order Incentives):** Automated tier calculation (Rp 1.500.000/SPK + accelerator bonus for delivery > 10 units), payroll verification status, and batch finance submission.
-- **Direktori Tim (3S Team Directory):** Employee card grid with live status indicators, company email, telephone extensions, KPI index badges, and internal contact triggers.
-- **Pipeline Prospek (Vehicle Sales Leads):** 5-stage customer conversion funnel (*New Inquiry*, *Contacted*, *Test Drive*, *Financing Negotiation*, *Delivered*), vehicle interest tracking, and showroom lead creation.
-- **Laporan Cabang (Dealership 3S Analytics):** Executive monthly summary, sales realization, workshop volume, CSAT index (4.8/5.0), spare parts turnover ratio, dealership SOP compliance audit, and official PDF/Excel report downloads.
-
-### 3. Experience & Accessibility
-- **Dual Theme Engine:** *Obsidian Dark* (`[data-theme="dark"]`) and *Alabaster Light* (`[data-theme="light"]`) with smooth CSS token transitions and zero-flash pre-paint script.
-- **Bilingual Interface:** Instant switching between natural **Bahasa Indonesia** and **English** with 100% dictionary key parity.
-- **Accessibility (A11y):** Full keyboard navigation with skip-link, semantic landmarks, descriptive ARIA attributes, live regions for toasts, and `prefers-reduced-motion` compliance.
+- Production URL: [https://autopulse-crm.vercel.app/](https://autopulse-crm.vercel.app/)
+- GitHub Pages Mirror: [https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)
+- Access Mode: Direct dashboard entry without authentication gates.
+- Multi-Branch & Persona Switcher: Switch between HRD & People Operations and Branch Manager across five dealership branches (Jakarta Pusat, BSD City, Bandung, Surabaya, Medan). Preferences persist via localStorage.
 
 ---
 
-## 🛠️ Technology Stack & Architecture
+## Core Capabilities
 
-Built completely with the **Pure Vanilla Web Platform** to ensure zero runtime overhead, instant load times, and maximum maintainability:
+### 1. Operational Telemetry & KPI Engine
+Dynamic performance indicators featuring custom SVG sparklines and day-over-day trend analysis.
 
-| Layer | Technologies Used | Key Characteristics |
+![Operational KPIs](assets/preview-kpis.png)
+
+- HRD Metrics: Staff attendance rate, approved leaves, workshop stall utilization, and SPK commissions.
+- Branch Manager Metrics: Delivered units, service intake volume, lead conversion rate, and CSAT index.
+
+### 2. Native Data Visualization
+Mathematical SVG rendering engine generating responsive charts without external charting libraries.
+
+![Attendance Trend Chart](assets/preview-chart.png)
+
+- Custom SVG line charts with gradient fills, interactive crosshair tooltips, and 7-day/30-day filters.
+- Semicircle target gauges and donut charts for quota achievement and workforce distribution.
+
+### 3. Prospective Customer Pipeline
+End-to-end sales funnel tracking prospective vehicle buyers from initial inquiry to final unit delivery.
+
+![Sales Pipeline Funnel](assets/preview-leads.png)
+
+- Five conversion stages: New Inquiry, Contacted, Test Drive Scheduled, Financing Negotiation, and SPK Issued / Delivered.
+- Vehicle interest classification (Sedan EV, Hybrid SUV, MPV, City Car) with assigned sales consultant tracking.
+
+### 4. 3S Workforce Directory
+Consolidated personnel directory across Sales, Workshop, and Service Advisory divisions.
+
+![3S Team Directory](assets/preview-team.png)
+
+- Real-time attendance indicators, internal extensions, work emails, and individual KPI ratings.
+- Role-based division filtering and direct contact triggers.
+
+### 5. Branch Executive Analytics
+Comprehensive monthly operational reporting with audit compliance and multi-format data exports.
+
+![Branch Performance Analytics](assets/preview-reports.png)
+
+- Summary of SPK sales targets, service stall turnaround, spare parts turnover, and dealer SOP compliance audits.
+- One-click PDF report generation and structured Excel analytics exports.
+
+---
+
+## Technology Stack
+
+| Layer | Implementation | Details |
 | :--- | :--- | :--- |
-| **Structure** | Semantic HTML5 | Accessible landmarks, ARIA labels, skip-links, WCAG compliance |
-| **Styling** | Modern Vanilla CSS3 | Custom Properties (Design Tokens), Glassmorphism (`backdrop-filter`), `color-mix()`, CSS Grid & Flexbox |
-| **Logic** | Vanilla JavaScript (ES6+) | Modular architecture, reactive state management, zero external libraries |
-| **Visualization** | Native SVG Engine | Mathematical coordinate generation for line charts, bar charts, donut charts, and gauges without Chart.js or D3 |
-| **State & Preference** | Web Storage API (`localStorage`) | Preserves selected branch, active role, theme, and language across reloads |
-| **Testing** | Node.js Test Runner | 18 automated unit and DOM integrity tests with 100% pass rate |
+| Markup | Semantic HTML5 | Accessible landmarks, skip-links, ARIA live regions |
+| Styling | Modern CSS3 | Custom Properties, Glassmorphism, CSS Grid, Flexbox |
+| Runtime Logic | Vanilla JavaScript (ES6+) | Modular architecture, reactive state, zero npm dependencies |
+| Visualizations | Native SVG | Algorithmic path generation for lines, bars, donuts, and gauges |
+| Storage | Web Storage API | Client-side persistence for branch, role, language, and theme |
+| Verification | Node.js Test Runner | 18 automated unit and DOM integrity tests (100% pass rate) |
 
 ---
 
-## 📂 Project Structure
+## System Architecture
 
 ```text
 autopulse-crm/
 ├── index.html              # Main application shell with multi-role subviews
-├── styles.css              # Core design tokens, dark/light themes, and typography
-├── dashboard.css          # Scoped dashboard layout, charts, cards, and subview styles
-├── dashboard.js            # Reactive dashboard controller, SVG rendering, and tab routing
-├── dashboard-data.js       # Deterministic seeded mock data engine (5 branches, 2 roles)
-├── dashboard-i18n.js       # Bilingual dictionary (Indonesian & English)
-├── serve.js                # Lightweight zero-dependency Node.js HTTP preview server
-├── tests/                  # Automated test suite
-│   ├── dashboard-data.test.js # Data consistency and PRNG determinism tests
-│   ├── i18n.test.js        # Bilingual dictionary parity and completeness tests
-│   └── integrity.test.js   # HTML ID uniqueness and JS DOM query matching tests
+├── styles.css              # Design tokens, typography, and dark/light themes
+├── dashboard.css          # Layout grids, components, and module styling
+├── dashboard.js            # State management, SVG charting, and tab routing
+├── dashboard-data.js       # Deterministic seeded mock data engine
+├── dashboard-i18n.js       # Bilingual dictionary (Indonesian and English)
+├── serve.js                # Built-in HTTP static preview server
+├── assets/                 # Vector favicons, images, and interface previews
+├── tests/                  # Automated test suite (DOM integrity, data, i18n)
 └── README.md               # Technical documentation
 ```
 
 ---
 
-## 💻 Running Locally
+## Local Setup
 
-### Option 1: Native Node.js Preview Server (Recommended)
-This repository includes a zero-dependency HTTP server:
+### Option 1: Native Node.js Server
 
 ```bash
-# Clone the repository
 git clone https://github.com/iqbal-alpha/autopulse-crm.git
-
-# Enter project directory
 cd autopulse-crm
-
-# Start the preview server
 node serve.js
 ```
-Open **`http://127.0.0.1:5500`** in your browser.
 
-### Option 2: Direct File Open
-Because the project uses relative paths and standard ES6 modules, you can also simply double-click **`index.html`** or serve it with any static web server (such as VS Code Live Server).
+Access the application at `http://127.0.0.1:5500`.
+
+### Option 2: Direct File Execution
+Open `index.html` directly in any modern web browser or serve via any static web server.
 
 ---
 
-## 🧪 Automated Testing
+## Automated Verification
 
-All core modules are verified by Node.js built-in test runner:
+Run the test suite using Node.js built-in test runner:
 
 ```bash
-# Run all test suites
 node tests/integrity.test.js
 node tests/dashboard-data.test.js
 node tests/i18n.test.js
 ```
 
-**Test Coverage Highlights:**
-- **18 / 18 passing unit tests**:
-  - Deterministic data generation across all 5 branches (`jkt`, `bsd`, `bdg`, `sby`, `mdn`).
-  - Strict 1:1 key parity between Indonesian and English dictionaries.
-  - HTML ID uniqueness and 100% selector consistency between JavaScript and HTML templates.
-  - Script order verification and translation hook integrity.
+All 18 unit tests validate:
+- HTML ID uniqueness and JavaScript DOM query alignment.
+- 1:1 key parity across Indonesian and English dictionaries.
+- Deterministic pseudorandom data generation across all branches.
+- Semantic script load order and accessibility attributes.
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the [MIT License](LICENSE) — feel free to use it for portfolio and demonstration purposes.
+This project is licensed under the [MIT License](LICENSE).
