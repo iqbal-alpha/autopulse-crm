@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoPulse CRM — Login | Automotive Customer &amp; Workforce Management</title>
-  <meta name="description" content="AutoPulse CRM: platform CRM dealer otomotif yang menyatukan pipeline penjualan, layanan bengkel, dan statistik kinerja SDM untuk HRD dalam satu dashboard.">
+  <title>Dashboard — AutoPulse CRM | Automotive Operations &amp; HR</title>
+  <meta name="description" content="Dashboard operasional dealer dan manajemen produktivitas SDM otomotif AutoPulse CRM.">
   <meta name="theme-color" content="#0A0E17">
-  <!-- Apply saved theme/language before paint to avoid a flash of the wrong theme -->
+  <meta name="robots" content="noindex">
+  <!-- Pre-paint theme & language to prevent flash of unstyled theme -->
   <script>
     (function () {
       try {
@@ -24,286 +25,431 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard.css">
 </head>
-<body>
+<body class="page-dashboard">
+  <a href="#main-content" id="skip-link" class="skip-link" data-i18n="skipToContent">Lewati ke konten utama</a>
   <div class="bg-glow" aria-hidden="true"></div>
 
-  <!-- ===== Top bar: brand, language & theme controls ===== -->
-  <header class="topbar">
-    <a class="brand" href="#" aria-label="AutoPulse CRM">
-      <span class="brand-mark" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
-      </span>
-      <span class="brand-name">Auto<span>Pulse</span></span>
-      <span class="brand-tag">CRM</span>
-    </a>
-    <div class="topbar-controls">
-      <div class="lang-toggle" role="group" aria-label="Language / Bahasa">
-        <button type="button" id="lang-id" class="lang-btn" data-lang="id" aria-pressed="true">ID</button>
-        <button type="button" id="lang-en" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+  <div class="dash-shell">
+    <!-- ===== Sidebar ===== -->
+    <aside id="sidebar" class="dash-sidebar" data-i18n-aria="navLabel" aria-label="Navigasi sidebar">
+      <div class="sidebar-header">
+        <a class="brand" href="#" aria-label="AutoPulse CRM">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+          </span>
+          <span class="brand-name">Auto<span>Pulse</span></span>
+          <span class="brand-tag">CRM</span>
+        </a>
+        <button type="button" id="sidebar-close" class="sidebar-close-btn" data-i18n-aria="menuClose" aria-label="Tutup menu navigasi">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
       </div>
-      <button type="button" id="theme-toggle" class="theme-toggle" data-i18n-aria="themeToggle" aria-label="Ganti tema">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-      </button>
-    </div>
-  </header>
+      <p class="brand-sub" data-i18n="brandSub">Portal Operasional &amp; SDM</p>
 
-  <main class="split-container">
-    <!-- ===== Left: authentication portal ===== -->
-    <section id="auth-section" class="auth-panel" aria-labelledby="login-title">
-      <div class="auth-card">
-        <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span><span id="greeting-text">Selamat Pagi</span>, <span data-i18n="greetingSuffix">Rekan AutoPulse</span></p>
-        <h1 id="login-title" data-i18n="loginTitle">Masuk ke AutoPulse CRM</h1>
-        <p class="subtitle" data-i18n="loginSubtitle">Kinerja andal, pelayanan unggul. Kelola prospek, servis, dan tim dealer Anda dalam satu tempat.</p>
+      <nav id="side-nav" class="side-nav" data-i18n-aria="navLabel" aria-label="Navigasi utama">
+        <button type="button" class="nav-item is-active" data-nav="overview" aria-current="page">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span class="nav-label" data-i18n="nav_overview">Ringkasan</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="attendance">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="nav-label" data-i18n="nav_attendance">Presensi Staf</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="commission">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span class="nav-label" data-i18n="nav_commission">Insentif SPK</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="team">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <span class="nav-label" data-i18n="nav_team">Direktori Tim</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="leads">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span class="nav-label" data-i18n="nav_leads">Pipeline Prospek</span>
+        </button>
+        <button type="button" class="nav-item" data-nav="reports">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+          <span class="nav-label" data-i18n="nav_reports">Laporan Cabang</span>
+        </button>
+      </nav>
 
-        <form id="login-form" novalidate>
-          <div class="field" id="field-identifier">
-            <label for="nip-email" data-i18n="labelIdentifier">NIP atau Email Perusahaan</label>
-            <div class="input-wrap">
-              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="11" r="2.5"/><path d="M5.5 17c.8-1.8 2-2.5 3.5-2.5s2.7.7 3.5 2.5M15 10h3M15 14h3"/></svg>
-              <input id="nip-email" name="identifier" type="text" autocomplete="username" inputmode="email" aria-describedby="nip-email-error" data-i18n-placeholder="phIdentifier" placeholder="contoh: 10230045 atau nama@autopulse.id">
-            </div>
-            <p class="field-error" id="nip-email-error" aria-live="polite"></p>
-          </div>
-
-          <div class="field" id="field-password">
-            <label for="password" data-i18n="labelPassword">Kata Sandi</label>
-            <div class="input-wrap">
-              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-              <input id="password" name="password" type="password" autocomplete="current-password" aria-describedby="password-error" data-i18n-placeholder="phPassword" placeholder="Masukkan kata sandi">
-              <button type="button" id="toggle-pwd" class="pwd-toggle" data-i18n-aria="showPassword" aria-label="Tampilkan kata sandi" aria-pressed="false">
-                <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
-                <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M3 3l18 18M10.6 5.1A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6A17.4 17.4 0 0 0 2 12s3.6 7 10 7a10.6 10.6 0 0 0 5.4-1.5M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
-              </button>
-            </div>
-            <p class="field-error" id="password-error" aria-live="polite"></p>
-          </div>
-
-          <div class="field">
-            <label for="branch-select" data-i18n="labelBranch">Cabang Dealer</label>
-            <div class="input-wrap">
-              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-              <select id="branch-select" name="branch">
-                <option value="jkt">Jakarta Pusat — Gunung Sahari</option>
-                <option value="bsd">Tangerang — BSD City</option>
-                <option value="bdg">Bandung — Soekarno Hatta</option>
-                <option value="sby">Surabaya — Ahmad Yani</option>
-                <option value="mdn">Medan — Gatot Subroto</option>
-              </select>
-              <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <label class="checkbox" for="remember-me">
-              <input type="checkbox" id="remember-me" name="remember">
-              <span data-i18n="rememberMe">Ingat saya</span>
-            </label>
-            <button type="button" id="forgot-link" class="link-btn" data-i18n="forgotPassword">Lupa kata sandi?</button>
-          </div>
-
-          <div id="form-alert" class="form-alert" role="alert" hidden>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-            <span id="form-alert-text"></span>
-          </div>
-
-          <button type="submit" id="btn-login" class="btn btn-primary">
-            <span class="btn-label" data-i18n="signIn">Masuk Sistem</span>
-            <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            <span class="btn-spinner" aria-hidden="true"></span>
-          </button>
-
-          <div class="divider"><span data-i18n="orSignInWith">atau masuk dengan</span></div>
-
-          <button type="button" id="btn-sso" class="btn btn-outline">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" fill="#F25022"/><rect x="12.5" y="2" width="9.5" height="9.5" fill="#7FBA00"/><rect x="2" y="12.5" width="9.5" height="9.5" fill="#00A4EF"/><rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#FFB900"/></svg>
-            <span data-i18n="ssoButton">Akun Perusahaan (SSO)</span>
-          </button>
-
-          <div class="demo-box">
-            <span><strong data-i18n="demoTitle">Akun demo:</strong> NIP <code>10230045</code> · <span data-i18n="demoPassword">sandi</span> <code>demo123</code></span>
-            <button type="button" id="btn-demo-fill" class="demo-fill" data-i18n="demoFill">Isi otomatis</button>
-          </div>
-        </form>
-
-        <p class="help-line">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg>
-          <span data-i18n="needHelp">Butuh bantuan akun?</span>
-          <button type="button" id="hr-support-link" class="link-btn" data-i18n="contactHr">Hubungi HRD Support</button>
-        </p>
+      <div class="sidebar-footer">
+        <span class="branch-pill-dot" aria-hidden="true"></span>
+        <span id="sidebar-branch" class="sidebar-branch-name">Jakarta Pusat</span>
       </div>
-      <p class="auth-footer">© 2026 AutoPulse CRM · <span data-i18n="footerNote">Demo frontend untuk portofolio</span></p>
-    </section>
+    </aside>
 
-    <!-- ===== Right: Live Dealer Pulse (pre-auth, aggregated, zero PII) ===== -->
-    <section id="pulse-section" class="pulse-panel" aria-labelledby="pulse-title">
-      <div class="pulse-bg" aria-hidden="true"></div>
+    <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
-      <div id="pulse-content" class="pulse-content is-loading" aria-busy="true">
-        <div class="pulse-header">
-          <div>
-            <p class="eyebrow-live"><span class="live-dot" aria-hidden="true"></span>LIVE DEALER PULSE</p>
-            <h2 id="pulse-title" data-i18n="pulseTitle">Statistik Operasional Cabang</h2>
-            <p class="pulse-sub" id="pulse-branch">Jakarta Pusat — Gunung Sahari</p>
-          </div>
-          <div class="clock-box">
-            <span id="dealer-clock" class="dealer-clock">--:--:--</span>
-            <span id="shift-status" class="shift-badge">—</span>
+    <!-- ===== Main Column ===== -->
+    <div class="dash-main-wrap">
+      <!-- Top bar -->
+      <header class="dash-topbar">
+        <div class="topbar-left">
+          <button type="button" id="menu-toggle" class="menu-toggle-btn" data-i18n-aria="menuOpen" aria-label="Buka menu navigasi">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="topbar-title-group">
+            <h1 id="page-title" data-i18n="pageTitle">Ringkasan Operasional</h1>
+            <p class="topbar-sub"><span id="welcome-text">Selamat Pagi, Rina Kartika</span> · <span id="today-text" data-i18n="todayLabel">Hari ini</span></p>
           </div>
         </div>
 
-        <div class="stats-grid">
-          <!-- Attendance -->
-          <article id="stat-attendance" class="metric-card card-attendance">
-            <div class="card-head">
-              <h3 class="card-title">
-                <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.9-3.4 3.4-5 6.5-5s5.6 1.6 6.5 5M16 4.5a3.5 3.5 0 0 1 0 7M18.5 15c1.6.6 2.6 2.2 3 5"/></svg></span>
-                <span data-i18n="attendanceTitle">Kehadiran Staf Hari Ini</span>
-              </h3>
+        <div class="topbar-controls">
+          <div class="select-wrapper">
+            <label for="branch-select" class="sr-only" data-i18n="labelBranch">Cabang Dealer</label>
+            <select id="branch-select" class="dash-select" data-i18n-aria="labelBranch" aria-label="Cabang Dealer">
+              <option value="jkt">Jakarta — Gunung Sahari</option>
+              <option value="bsd">Tangerang — BSD City</option>
+              <option value="bdg">Bandung — Soekarno Hatta</option>
+              <option value="sby">Surabaya — Ahmad Yani</option>
+              <option value="mdn">Medan — Gatot Subroto</option>
+            </select>
+          </div>
+
+          <div class="select-wrapper">
+            <label for="role-select" class="sr-only" data-i18n="labelRole">Peran Aktif</label>
+            <select id="role-select" class="dash-select" data-i18n-aria="labelRole" aria-label="Peran Aktif">
+              <option value="hrd" data-i18n="role_hrd">HRD &amp; People Ops</option>
+              <option value="bm" data-i18n="role_bm">Branch Manager</option>
+            </select>
+          </div>
+
+          <div class="lang-toggle" role="group" aria-label="Language / Bahasa">
+            <button type="button" id="lang-id" class="lang-btn" data-lang="id" aria-pressed="true">ID</button>
+            <button type="button" id="lang-en" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+
+          <button type="button" id="theme-toggle" class="theme-toggle" data-i18n-aria="themeToggle" aria-label="Ganti tema">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
+
+          <button type="button" id="notif-btn" class="dash-icon-btn" data-i18n-aria="notifications" aria-label="Notifikasi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span id="notif-count" class="notif-badge">4</span>
+          </button>
+
+          <div class="user-menu-wrapper">
+            <button type="button" id="user-menu-btn" class="user-menu-btn" aria-haspopup="menu" aria-expanded="false" data-i18n-aria="userMenu" aria-label="Menu pengguna">
+              <span id="user-avatar" class="user-avatar" aria-hidden="true">RK</span>
+              <span class="user-caret" aria-hidden="true">▾</span>
+            </button>
+            <div id="user-menu" class="user-menu-dropdown" role="menu" hidden>
+              <div class="user-menu-info">
+                <strong id="user-name">Rina Kartika</strong>
+                <span id="user-role" class="user-role-tag" data-i18n="role_hrd">HRD &amp; People Ops</span>
+              </div>
             </div>
-            <div class="attendance-body">
-              <div class="gauge">
-                <svg viewBox="0 0 120 120" aria-hidden="true">
-                  <defs>
-                    <linearGradient id="gauge-gradient" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stop-color="#22D3EE"/>
-                      <stop offset="100%" stop-color="#3B82F6"/>
-                    </linearGradient>
-                  </defs>
-                  <circle class="gauge-track" cx="60" cy="60" r="52"/>
-                  <circle id="gauge-fill" class="gauge-fill" cx="60" cy="60" r="52" stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
-                </svg>
-                <div class="gauge-label">
-                  <span id="attendance-value" class="gauge-value skeleton-target">0%</span>
-                  <span class="gauge-caption" data-i18n="present">hadir</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main content body -->
+      <main id="main-content" class="dash-content" tabindex="-1">
+        <!-- ==================== SUB-VIEW 0: OVERVIEW ==================== -->
+        <div id="view-overview" class="subview-panel">
+          <!-- KPI Row -->
+          <section id="kpi-grid" class="kpi-grid" aria-label="Indikator Kinerja Utama">
+            <!-- Rendered dynamically by JS -->
+          </section>
+
+          <!-- Operational Grid (Charts, Table, Feed) -->
+          <div class="dash-grid">
+            <!-- Main Chart Card -->
+            <article id="chart-card" class="dash-card card-chart">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 id="chart-title" class="card-title" data-i18n="chartAttendanceTitle">Tren Kehadiran 30 Hari per Divisi</h2>
+                </div>
+                <div class="card-actions">
+                  <div id="range-group" class="range-btn-group" role="group" aria-label="Rentang Waktu">
+                    <button type="button" class="range-btn" data-range="7" data-i18n="range7">7 Hari</button>
+                    <button type="button" class="range-btn is-active" data-range="30" data-i18n="range30" aria-pressed="true">30 Hari</button>
+                  </div>
                 </div>
               </div>
-              <ul id="attendance-breakdown" class="breakdown"></ul>
-            </div>
-          </article>
+              <div id="chart-legend" class="chart-legend" role="group" aria-label="Filter Seri Grafik"></div>
+              <div id="chart-body" class="chart-body" role="img" aria-label="Grafik data operasional"></div>
+              <div id="chart-tooltip" class="chart-tooltip" role="status" aria-live="polite" hidden></div>
+              <div id="chart-sr" class="sr-only"></div>
+            </article>
 
-          <!-- Activity -->
-          <article id="stat-activity" class="metric-card card-activity">
-            <div class="card-head">
-              <h3 class="card-title">
-                <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-5.5A2 2 0 0 0 15.6 10H8.4a2 2 0 0 0-1.9 1.5L5 17zM5 17v2M19 17v2"/><circle cx="8" cy="14.5" r=".8"/><circle cx="16" cy="14.5" r=".8"/></svg></span>
-                <span data-i18n="activityTitle">Prospek &amp; Test Drive</span>
-              </h3>
-              <span class="card-chip" data-i18n="today">Hari ini</span>
-            </div>
-            <div class="activity-body">
-              <div class="kpi">
-                <div id="leads-value" class="kpi-value skeleton-target">0</div>
-                <div class="kpi-label" data-i18n="newLeads">Prospek baru</div>
-                <div id="leads-trend" class="kpi-trend">▲ 12%</div>
+            <!-- Side Card (Donut / Gauge) -->
+            <article id="side-card" class="dash-card card-side">
+              <div class="card-header">
+                <h2 id="side-title" class="card-title" data-i18n="sideDonutTitle">Komposisi Status Staf Hari Ini</h2>
               </div>
-              <div class="kpi">
-                <div id="testdrive-value" class="kpi-value skeleton-target">0</div>
-                <div class="kpi-label" data-i18n="testDrives">Test drive terjadwal</div>
-                <div id="spk-today" class="kpi-trend">3 SPK</div>
+              <div id="side-body" class="side-body" role="img" aria-label="Grafik ringkasan status"></div>
+              <div id="side-legend" class="side-legend"></div>
+            </article>
+
+            <!-- Detail Table Card -->
+            <article id="table-card" class="dash-card card-table">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <h2 id="table-title" class="card-title" data-i18n="tableStaffTitle">Status Kehadiran &amp; Skor KPI Staf</h2>
+                </div>
+                <div class="card-actions table-tools">
+                  <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="search" id="table-search" class="dash-search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Cari nama staf atau wiraniaga…">
+                  </div>
+                  <div class="select-wrapper">
+                    <label for="division-filter" class="sr-only" data-i18n="filterDivision">Divisi</label>
+                    <select id="division-filter" class="dash-select" data-i18n-aria="filterDivision" aria-label="Divisi">
+                      <option value="all" data-i18n="allDivisions">Semua Divisi</option>
+                      <option value="sales" data-i18n="div_sales">Sales Consultant</option>
+                      <option value="tech" data-i18n="div_tech">Teknisi Bengkel</option>
+                      <option value="sa" data-i18n="div_sa">Service Advisor</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div id="leads-sparkline" class="sparkline" aria-hidden="true"></div>
-              <p class="spark-caption" data-i18n="sparkCaption">Prospek masuk per jam (08:00 – sekarang)</p>
-            </div>
-          </article>
+              <div class="table-wrap">
+                <table id="data-table" class="dash-table">
+                  <thead id="table-head"></thead>
+                  <tbody id="table-body"></tbody>
+                </table>
+              </div>
+              <div class="table-footer">
+                <p id="table-count" class="table-count"></p>
+                <div id="table-empty" class="empty-box" hidden>
+                  <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+                </div>
+              </div>
+            </article>
 
-          <!-- Leaderboard -->
-          <article id="stat-leaderboard" class="metric-card card-leaderboard">
-            <div class="card-head">
-              <h3 class="card-title">
-                <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg></span>
-                <span data-i18n="leaderboardTitle">Top Sales Bulan Ini</span>
-              </h3>
-              <span id="leaderboard-target" class="card-chip">Target 10 SPK</span>
-            </div>
-            <ol id="leaderboard-list" class="leaderboard"></ol>
-          </article>
-        </div>
-
-        <div id="hr-announcement" class="ticker">
-          <span class="ticker-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7"/></svg>
-            <span data-i18n="hrInfo">Info HRD</span>
-          </span>
-          <div class="ticker-viewport">
-            <div id="ticker-track" class="ticker-track"></div>
+            <!-- Activity / Queue Feed Card -->
+            <article id="feed-card" class="dash-card card-feed">
+              <div class="card-header">
+                <div class="feed-title-wrap">
+                  <h2 id="feed-title" class="card-title" data-i18n="feedLeaveTitle">Pengajuan Cuti Menunggu Persetujuan</h2>
+                  <span id="feed-count" class="badge-count">4</span>
+                </div>
+              </div>
+              <ul id="feed-list" class="feed-list" role="list"></ul>
+              <div id="feed-empty" class="empty-box" hidden>
+                <p data-i18n="feedEmpty">Semua pengajuan telah diproses.</p>
+              </div>
+            </article>
           </div>
         </div>
 
-        <p class="pulse-meta">
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>
-            <span id="pulse-updated">—</span>
-          </span>
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg>
-            <span data-i18n="privacyNote">Data agregat — tanpa data pribadi pelanggan</span>
-          </span>
-        </p>
-      </div>
+        <!-- ==================== SUB-VIEW 1: ATTENDANCE ==================== -->
+        <div id="view-attendance" class="subview-panel" hidden>
+          <div id="att-summary-grid" class="kpi-grid"></div>
 
-      <!-- Graceful fallback when the stats feed is unavailable -->
-      <div id="pulse-fallback" class="pulse-fallback" hidden>
-        <span class="fallback-note" data-i18n="fallbackNote">Statistik sementara tidak tersedia</span>
-        <h2 data-i18n="fallbackTitle">Kinerja andal, pelayanan unggul.</h2>
-        <p data-i18n="fallbackText">Anda tetap dapat masuk seperti biasa. Data Live Dealer Pulse akan tampil kembali secara otomatis.</p>
-      </div>
-    </section>
-  </main>
+          <article class="dash-card subview-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2 class="card-title" data-i18n="att_card_log">Catatan Presensi &amp; Jam Kerja Harian</h2>
+              </div>
+              <div class="card-actions table-tools">
+                <div class="search-input-wrapper">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="search" id="att-search" class="dash-search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Cari nama staf atau wiraniaga…">
+                </div>
+                <div class="select-wrapper">
+                  <select id="att-status-filter" class="dash-select">
+                    <option value="all">Semua Status</option>
+                    <option value="present">Hadir Tepat Waktu</option>
+                    <option value="late">Terlambat</option>
+                    <option value="leave">Cuti Resmi</option>
+                    <option value="sick">Izin Sakit</option>
+                  </select>
+                </div>
+                <button type="button" id="btn-export-att" class="btn btn-outline btn-compact">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span data-i18n="att_btn_export">Ekspor Presensi (Excel)</span>
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="att-table" class="dash-table">
+                <thead id="att-table-head"></thead>
+                <tbody id="att-table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <p id="att-count" class="table-count"></p>
+              <div id="att-empty" class="empty-box" hidden>
+                <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+              </div>
+            </div>
+          </article>
+        </div>
 
-  <!-- ===== HR support modal ===== -->
-  <div id="hr-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="hr-modal-title" hidden>
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-card">
-      <button type="button" class="modal-close" data-close-modal data-i18n-aria="close" aria-label="Tutup">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-      <h2 id="hr-modal-title" data-i18n="hrModalTitle">Bantuan Akun HRD</h2>
-      <p data-i18n="hrModalText">Akun terkunci, lupa NIP, atau belum terdaftar? Tim People Operations siap membantu pada jam kerja (08:00 – 17:00).</p>
-      <ul class="contact-list">
-        <li>
-          <a class="contact-item" id="hr-whatsapp" href="https://wa.me/6281200000000" target="_blank" rel="noopener">
-            <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
-            <span><small>WhatsApp HR Helpdesk</small><strong>+62 812-0000-0000</strong></span>
-          </a>
-        </li>
-        <li>
-          <div class="contact-item">
-            <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
-            <span><small data-i18n="internalExt">Telepon internal</small><strong>Ext. 104</strong></span>
+        <!-- ==================== SUB-VIEW 2: COMMISSION ==================== -->
+        <div id="view-commission" class="subview-panel" hidden>
+          <div id="comm-summary-grid" class="kpi-grid"></div>
+
+          <div id="comm-rule-box" class="info-banner">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span data-i18n="comm_rule_note">Ketentuan: Komisi Rp 1.500.000/SPK + bonus akselerator Rp 500.000/unit untuk pencapaian di atas 10 unit.</span>
           </div>
-        </li>
-        <li>
-          <a class="contact-item" id="hr-email" href="mailto:people.ops@autopulse.id">
-            <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span>
-            <span><small>Email People Ops</small><strong>people.ops@autopulse.id</strong></span>
-          </a>
-        </li>
-      </ul>
+
+          <article class="dash-card subview-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2 class="card-title" data-i18n="comm_card_table">Rincian Insentif per Wiraniaga</h2>
+              </div>
+              <div class="card-actions">
+                <button type="button" id="btn-submit-payroll" class="btn btn-primary btn-compact">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <span data-i18n="comm_btn_payroll">Ajukan Batch Payroll</span>
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="comm-table" class="dash-table">
+                <thead id="comm-table-head"></thead>
+                <tbody id="comm-table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <p id="comm-count" class="table-count"></p>
+            </div>
+          </article>
+        </div>
+
+        <!-- ==================== SUB-VIEW 3: TEAM DIRECTORY ==================== -->
+        <div id="view-team" class="subview-panel" hidden>
+          <div class="team-toolbar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="team-search" class="dash-search-input" data-i18n-placeholder="team_search_ph" placeholder="Cari nama staf, jabatan, atau NIP…">
+            </div>
+            <div class="select-wrapper">
+              <select id="team-division-filter" class="dash-select">
+                <option value="all" data-i18n="team_filter_all">Semua Karyawan</option>
+                <option value="sales" data-i18n="div_sales">Sales Consultant</option>
+                <option value="tech" data-i18n="div_tech">Teknisi Bengkel</option>
+                <option value="sa" data-i18n="div_sa">Service Advisor</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="team-grid" class="team-cards-grid"></div>
+          <div id="team-empty" class="empty-box" hidden>
+            <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+          </div>
+        </div>
+
+        <!-- ==================== SUB-VIEW 4: LEADS PIPELINE ==================== -->
+        <div id="view-leads" class="subview-panel" hidden>
+          <div id="leads-funnel-grid" class="funnel-grid"></div>
+
+          <article class="dash-card subview-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h2 class="card-title" data-i18n="leads_card_table">Daftar Pelanggan Prospektif Aktif</h2>
+              </div>
+              <div class="card-actions table-tools">
+                <div class="search-input-wrapper">
+                  <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="search" id="leads-search" class="dash-search-input" placeholder="Cari pelanggan, model mobil, atau sales…">
+                </div>
+                <button type="button" id="btn-add-lead" class="btn btn-primary btn-compact">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span data-i18n="leads_btn_add">Tambah Prospek Baru</span>
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="leads-table" class="dash-table">
+                <thead id="leads-table-head"></thead>
+                <tbody id="leads-table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <p id="leads-count" class="table-count"></p>
+              <div id="leads-empty" class="empty-box" hidden>
+                <p data-i18n="tableEmpty">Tidak ada data staf yang sesuai dengan filter pencarian.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- ==================== SUB-VIEW 5: BRANCH REPORTS ==================== -->
+        <div id="view-reports" class="subview-panel" hidden>
+          <div class="reports-header-card dash-card">
+            <div class="reports-header-info">
+              <span class="report-tag" data-i18n="rep_month_label">Periode: Oktober 2026</span>
+              <h2 class="reports-header-title" data-i18n="rep_header">Ringkasan Laporan Operasional Bulanan</h2>
+            </div>
+            <div class="reports-header-actions">
+              <button type="button" id="btn-download-pdf" class="btn btn-outline btn-compact">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <span data-i18n="rep_btn_pdf">Unduh Laporan Resmi (PDF)</span>
+              </button>
+              <button type="button" id="btn-download-excel" class="btn btn-primary btn-compact">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span data-i18n="rep_btn_excel">Ekspor Data Analitik (Excel)</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="rep-kpi-grid" class="kpi-grid"></div>
+
+          <div class="reports-grid">
+            <article id="rep-summary-card" class="dash-card">
+              <div class="card-header">
+                <h3 class="card-title" data-i18n="rep_header">Ringkasan Laporan Operasional Bulanan</h3>
+              </div>
+              <div class="card-body-padded">
+                <div class="report-stats-list">
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_sales_score">Pencapaian Target Penjualan (SPK)</span>
+                    <strong id="rep-stat-spk" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_service_score">Volume Unit Servis Bengkel</span>
+                    <strong id="rep-stat-service" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_csat_score">Skor Kepuasan Pelanggan (CSAT)</span>
+                    <strong id="rep-stat-csat" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_parts_score">Efisiensi Perputaran Sparepart</span>
+                    <strong id="rep-stat-parts" class="report-stat-val">—</strong>
+                  </div>
+                  <div class="report-stat-item">
+                    <span class="report-stat-label" data-i18n="rep_sop_score">Kepatuhan SOP &amp; Audit Dealer</span>
+                    <strong id="rep-stat-sop" class="report-stat-val">—</strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="dash-card">
+              <div class="card-header">
+                <h3 class="card-title" data-i18n="rep_highlights">Sorotan Utama Operasional Cabang</h3>
+              </div>
+              <div class="card-body-padded">
+                <ul id="rep-highlights-list" class="highlights-list"></ul>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <footer class="dash-footer">
+          <span id="last-updated" class="footer-updated"></span>
+          <span class="footer-note" data-i18n="demoNote">Data simulasi portofolio deterministik · Zero customer PII</span>
+        </footer>
+      </main>
     </div>
   </div>
 
-  <!-- ===== Login success (demo) ===== -->
-  <div id="success-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="success-title" hidden>
-    <div class="modal-backdrop"></div>
-    <div class="modal-card success-card">
-      <div class="success-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-      </div>
-      <h2 id="success-title" data-i18n="successTitle">Login berhasil</h2>
-      <div class="success-user">
-        <strong id="success-name">Rina Kartika</strong>
-        <span id="success-role">HRD &amp; People Ops</span>
-      </div>
-      <p class="success-note" data-i18n="successNote">Ini adalah demo frontend portofolio. Halaman dashboard akan hadir pada tahap berikutnya.</p>
-      <button type="button" id="btn-open-dashboard" class="btn btn-primary"><span class="btn-label" data-i18n="openDashboard">Buka Dashboard</span></button>
-    </div>
-  </div>
+  <!-- Toast notification stack region -->
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="false"></div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <script src="session.js"></script>
-  <script src="app.js"></script>
+  <!-- Scripts -->
+  <script src="dashboard-data.js"></script>
+  <script src="dashboard-i18n.js"></script>
+  <script src="dashboard.js"></script>
 </body>
 </html>

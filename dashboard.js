@@ -10,19 +10,11 @@
   "use strict";
 
   /* ---------- Dependencies & Bootstrap ---------- */
-  const Session = window.AutoPulseSession;
   const Data = window.AutoPulseData;
   const I18N = window.AutoPulseDashI18n;
 
-  if (!Session || !Data || !I18N) {
+  if (!Data || !I18N) {
     console.error("AutoPulse: Missing dependencies");
-    return;
-  }
-
-  // Guard: if no active session, redirect to login
-  const activeSession = Session.read();
-  if (!activeSession) {
-    window.location.replace("index.html?expired=1");
     return;
   }
 
@@ -30,15 +22,24 @@
   const STORAGE = {
     theme: "autopulse-theme",
     lang: "autopulse-lang",
+    role: "autopulse-role",
+    branch: "autopulse-branch",
   };
 
   const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const LATENCY_MS = 380;
 
+  const initialRole = (() => {
+    try { return localStorage.getItem(STORAGE.role) || "hrd"; } catch (e) { return "hrd"; }
+  })();
+  const initialBranch = (() => {
+    try { return localStorage.getItem(STORAGE.branch) || "jkt"; } catch (e) { return "jkt"; }
+  })();
+
   const state = {
-    user: activeSession.name,
-    role: activeSession.role || "hrd",
-    branch: activeSession.branch || "jkt",
+    user: initialRole === "bm" ? "Budi Santoso" : "Rina Kartika",
+    role: initialRole,
+    branch: initialBranch,
     lang: "id",
     range: 30, // 7 or 30 days for HRD chart
     data: null,
@@ -87,7 +88,6 @@
     userAvatar: $("#user-avatar"),
     userName: $("#user-name"),
     userRole: $("#user-role"),
-    logoutBtn: $("#logout-btn"),
     kpiGrid: $("#kpi-grid"),
     chartCard: $("#chart-card"),
     chartTitle: $("#chart-title"),
@@ -1519,25 +1519,20 @@
       }
     });
 
-    // Logout
-    el.logoutBtn.addEventListener("click", () => {
-      Session.clear();
-      showToast(t("logoutToast"), "info");
-      setTimeout(() => {
-        window.location.replace("index.html");
-      }, 700);
-    });
-
     // Branch and role selection
     el.branchSelect.addEventListener("change", () => {
       state.branch = el.branchSelect.value;
-      Session.update({ branch: state.branch });
+      storage.set(STORAGE.branch, state.branch);
       loadData();
     });
 
     el.roleSelect.addEventListener("change", () => {
       state.role = el.roleSelect.value;
-      Session.update({ role: state.role });
+      state.user = state.role === "bm" ? "Budi Santoso" : "Rina Kartika";
+      el.userName.textContent = state.user;
+      el.userAvatar.textContent = initials(state.user);
+      el.userRole.textContent = t(state.role === "bm" ? "role_bm" : "role_hrd");
+      storage.set(STORAGE.role, state.role);
       state.sort = { key: null, dir: "desc" };
       state.query = "";
       el.tableSearch.value = "";
@@ -1596,9 +1591,10 @@
 
   /* ---------- Initialization ---------- */
   function init() {
-    // Sync state with session & inputs
+    // Sync state with persona & inputs
     el.userName.textContent = state.user;
     el.userAvatar.textContent = initials(state.user);
+    el.userRole.textContent = t(state.role === "bm" ? "role_bm" : "role_hrd");
     el.branchSelect.value = state.branch;
     el.roleSelect.value = state.role;
 
