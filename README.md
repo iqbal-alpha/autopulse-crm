@@ -4,6 +4,7 @@
 [![CSS3](https://img.shields.io/badge/CSS3-Modern_Tokens-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![HTML5](https://img.shields.io/badge/HTML5-Semantic_A11y-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![Tests](https://img.shields.io/badge/Tests-18%20Passing%20(100%25)-success)](https://nodejs.org/api/test.html)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live_Demo-black?logo=vercel&logoColor=white)](https://autopulse-crm.vercel.app/)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-Zero-blueviolet)](#technology-stack)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -13,7 +14,8 @@
 
 ## 🚀 Live Demo & Quick Access
 
-- **Live URL:** [https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)
+- **Live Production URL (Vercel):** [https://autopulse-crm.vercel.app/](https://autopulse-crm.vercel.app/)
+- **GitHub Pages Mirror:** [https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)
 - **Direct Access (Zero Gatekeeping):** Instant access to the complete operational dashboard without any login wall or credential entry required.
 - **Adaptive Personas & Dealership Branches:** Switch roles on the fly between **HRD & People Operations** and **Branch Manager**, and toggle across 5 major dealership branches (*Jakarta Pusat, BSD City, Bandung, Surabaya, Medan*) directly from the top navigation bar. Preferences persist automatically in `localStorage`.
 
