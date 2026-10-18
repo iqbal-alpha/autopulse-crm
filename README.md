@@ -14,8 +14,8 @@
 ## 🚀 Live Demo & Quick Access
 
 - **Live URL:** [https://iqbal-alpha.github.io/autopulse-crm/](https://iqbal-alpha.github.io/autopulse-crm/)
-- **Direct Access (Zero Gatekeeping):** Pengunjung dapat langsung mengakses dashboard operasional penuh tanpa gerbang login.
-- **Peran & Cabang Adaptif:** Beralih peran secara instan antara **HRD & People Operations** dan **Branch Manager**, serta memilih 5 cabang dealer utama (Jakarta, BSD City, Bandung, Surabaya, Medan) langsung dari dropdown navigasi atas.
+- **Direct Access (Zero Gatekeeping):** Instant access to the complete operational dashboard without any login wall or credential entry required.
+- **Adaptive Personas & Dealership Branches:** Switch roles on the fly between **HRD & People Operations** and **Branch Manager**, and toggle across 5 major dealership branches (*Jakarta Pusat, BSD City, Bandung, Surabaya, Medan*) directly from the top navigation bar. Preferences persist automatically in `localStorage`.
 
 ---
 
